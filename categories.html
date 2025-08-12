@@ -1,0 +1,86 @@
+---
+title: Categories
+permalink: /categories/
+---
+
+<style>
+    .archive_categories{
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        flex: 1;
+        max-width: 1100px;
+        margin: auto;
+        padding-top: 1.5rem;
+    }
+    .category_title{
+        font-size: 1rem;
+    }
+    .results_c h2{
+        font-size: 1.2rem;
+    }
+    .results_c a{
+        text-decoration: none;
+    }
+    .site_categories a{
+        text-decoration: none;
+    }    
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('filter_box');
+    const categoryBlocks = document.querySelectorAll('.category-block');
+
+    input.addEventListener('input', function () {
+        const filter = this.value.trim().toLowerCase();
+
+        categoryBlocks.forEach(block => {
+            const categoryName = block.getAttribute('data-category');
+            if (categoryName.includes(filter)) {
+                block.style.display = '';
+            } else {
+                block.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
+{% include header.html %}
+<div class="archive_categories">
+    <header class="category_title">
+        <h1>{{ page.title }}</h1>
+    </header>
+    <p>
+        <input class="form-control" id="filter_box" placeholder="Filter categories..." style="padding-left: 20px; width: 100%; border-radius: 10px;">
+    </p>
+    <div class="site_categories">
+        <p>
+            <span>
+                📁
+                {%- for category in site.categories -%}
+                {% assign name = category[0] %}
+                <a class="category-item" href="#{{ name }}">{{ name }}</a> 
+                {%- endfor -%}
+            </span>
+        </p>
+    </div>
+    <div class="results_c">
+    {%- for category in site.categories -%}
+        {% assign category_name = category[0] %}
+        {% assign posts = category[1] %}
+        <div class="category-block" data-category="{{ category_name | downcase }}">
+            <h2 id="{{ category_name }}">
+                {{ category_name | upcase }} [{{ posts | size }}]
+            </h2>
+            {%- for post in posts -%}
+                <article class="post-item" id="results-container">
+                    <h3 class="post_item_title">
+                        <a href="{{ post.url }}">{{ post.title | escape }}</a>
+                    </h3> 
+                </article>
+            {%- endfor -%}
+        </div>
+    {%- endfor -%}
+    </div>
+</div>
+{% include footer.html %}

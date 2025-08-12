@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+:root {
+  --padding-main-x: clamp(1rem, 15vw, 20rem);
+  --padding-main-y: 0.5rem;
+  --color-bg: #333533;
+  --color-text: #e8eddf;
+  --font: "Roboto", sans-serif;
+}
+
+body {
+  background-color: var(--color-bg);
+  flex-direction: column;
+  padding: 0.5rem var(--padding-main-x);
+  font-family: var(--font);
+  overflow-x: hidden;
+}
+
+h1 {
+  color: #cfdbd5;
+}
+h2 {
+  color: #f5cb5c;
+}
+h3,
+h4,
+h5,
+h6 {
+  color: #f2a900;
+}
+p {
+  color: var(--color-text);
+}
+a {
+  color: #e84b3c;
+}
+
+.highlight {
+  position: relative;
+  background: #2d2d2d;
+  color: #d8d8d8;
+  padding: 1.5em;
+  border-radius: 8px;
+  border-width: 0.15rem;
+  border-style: solid;
+  border-color: #444;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace;
+  font-size: 1em; /* Un poquito más grande */
+  margin: 1em 0 1em;
+  line-height: 1.6;
+}
+.highlight .k {
+  color: #ff8c00; /* Naranja brillante para las palabras clave (keywords) */
+}
+.highlight .s {
+  color: #f5cb5c; /* Amarillo dorado para cadenas de texto */
+}
+.highlight .c {
+  color: #8c8c8c;
+  font-style: italic;
+}
+.highlight .n {
+  color: #64a0ff;
+}
+.highlight .o {
+  color: #ffd700;
+}
+.post-link {
+  padding: 0;
+}
+code {
+  background-color: #2d2d2d;
+  color: #f5cb5c;
+  font-family: "Fira Code", monospace;
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
+}
+
+.post-link li.post-item {
+  margin-bottom: 40px;
+}
+
+.post-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.post-text {
+  flex: 1;
+}
+
+.post-image img {
+  max-width: 300px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.post_header {
+  margin-bottom: 20px;
+}
+
+.page-heading {
+  padding-bottom: 20px;
+}
+
+img.centered {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*RESPONSIVIDAD*/
+.desktop-only {
+  display: unset !important;
+}
+.mobile-only {
+  display: none !important;
+}
+
+@media screen and (max-width: 980px) {
+  :root {
+    --padding-main-x: 2rem;
+    --padding-main-y: 3rem;
+  }
+}
+
+@media screen and (max-width: 728px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: unset !important;
+  }  
+  p {
+    font-size: medium;
+  }
+}

@@ -1,0 +1,98 @@
+<style>
+.page_content {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+  max-width: 1100px;
+  margin: auto;
+  padding-top: 20px;    
+  box-sizing: border-box;
+}
+
+/* Evita scroll horizontal */
+html, body {
+  overflow-x: hidden;
+}
+
+a, p, ul li, ol li {
+  font-size: 1.1rem;
+}
+
+.post_title h1 {
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.tag_list a {
+  text-decoration: none;
+  color: #FFD700;
+}
+
+li {
+  list-style: none;
+}
+
+/* Imágenes dentro del contenido */
+.post-content img,
+.post-content-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.post-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.post-text {
+  flex: 1;
+}
+
+.row {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .post-content-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .post-content {
+    flex-direction: column;
+  }
+}
+</style>
+
+{% include header.html %}
+<div class="page_content">
+  <header class="post_header">
+    <h1 class="post_title">{{ page.title }}</h1>
+    <p class="tag_meta">
+      <span class="tag_list">        
+        {% for tag in page.tags %}
+        🏷️
+        <a href="/tags#{{ tag | slugify }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+        {% endfor %}
+      </span>
+    </p>
+  </header>
+  <div class="post-content">
+    <div class="row">                    
+      <div>
+        {{ content | replace: '<img ', '<img class="post-content-image" ' }}
+      </div>
+    </div>
+  </div>
+</div>
+{% include footer.html %}

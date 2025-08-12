@@ -1,0 +1,86 @@
+---
+title: Tags
+permalink: /tags/
+---
+
+<style>
+    .archive_tags{
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        flex: 1;
+        max-width: 1100px;
+        margin: auto;
+        padding-top: 1.5rem;
+    }
+    .tag_title{
+        font-size: 1rem;
+    }
+    .results_t h2{
+        font-size: 1.2rem;
+    }
+    .results_t a{
+        text-decoration: none;
+    }
+    .site_tags a{
+        text-decoration: none;
+    }    
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('filter_box');
+    const tagBlocks = document.querySelectorAll('.tag-block');
+
+    input.addEventListener('input', function () {
+        const filter = this.value.trim().toLowerCase();
+
+        tagBlocks.forEach(block => {
+            const tagName = block.getAttribute('data-tag');
+            if (tagName.includes(filter)) {
+                block.style.display = '';
+            } else {
+                block.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
+{% include header.html %}
+<div class="archive_tags">
+    <header class="tag_title">
+        <h1>{{page.title}}</h1>
+    </header>
+    <p>
+        <input class="form-control" id="filter_box" placeholder="Filter tags..." style="padding-left: 20px; width: 100%; border-radius: 10px;">
+    </p>
+    <div class="site_tags">
+        <p>
+            <span>
+                🏷️
+                {%- for tag in site.tags -%} 
+                {% capture name %}{{ tag | first }}{% endcapture %}
+                <a class="tag-item" href="#{{name}}">{{ name }}</a> 
+                {%- endfor -%}
+            </span>
+        </p>
+    </div>
+    <div class="results_t">
+    {%- for tag in site.tags -%}
+        {%- assign tag_name = tag[0] -%}
+        {%- assign posts = tag[1] -%}
+        <div class="tag-block" data-tag="{{ tag_name | downcase }}">
+            <h2 id="{{ tag_name }}">
+                {{ tag_name | upcase }} [{{ posts | size }}]
+            </h2>
+            {%- for post in posts -%}
+                <article class="post-item" id="results-container">
+                    <h3 class="post_item_title">
+                        <a href="{{ post.url }}">{{ post.title | escape }}</a>
+                    </h3> 
+                </article>
+            {%- endfor -%}
+        </div>
+    {%- endfor -%}
+    </div>
+</div>
+{% include footer.html %}
