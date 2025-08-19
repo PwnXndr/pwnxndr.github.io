@@ -6,7 +6,7 @@ categories: [Vulnyx]
 tags: [Vulnyx, LFI, VNC, Fuzzing, Local Port Forwarding]
 image: "../assets/machines/VULNYX/vulnyx.png"
 ---
-Internal es una maquina maquina <span class="color-text-yellow">**Linux**</span> de nivel <span class="color-text-yellow">**MEDIUM**</span>, que esta basado en un <span class="color-text-salmon">**Active Directory**</span>.
+Internal es una maquina maquina <span class="color-text-yellow">**Linux**</span> de nivel <span class="color-text-yellow">**MEDIUM**</span>, que esta basado en un <span class="color-text-salmon">**LFI**, **Local Port Forwarding**, **etc**</span>.
 
 ![](/assets/machines/VULNYX/Internal/info.png)
 
