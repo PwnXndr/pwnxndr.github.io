@@ -7,6 +7,7 @@ tags: [HackTheBox, IDOR, Command Injection, PHP, Authenticated RCE, Web Exploita
 image: "../assets/machines/HTB/HTB_Nocturnal/logo.png"
 ---
 **Nocturnal** es una máquina Linux de dificultad <span class="color-text-lime">**EASY**</span> centrada en el análisis de una aplicación web en PHP, donde se exploran fallos de acceso, análisis de código y explotación de software vulnerable. Ideal para practicar técnicas realistas de enumeración, obtención de credenciales y escalada de privilegios.
+
 ![](/assets/machines/HTB/HTB_Nocturnal/info.png)
 # Enumeracion
 Usaremos nuestra herramienta para enumerar <span class="color-text-yellow">**PUERTOS ABIERTOS**</span>, en este caso usare `rustscan`.
